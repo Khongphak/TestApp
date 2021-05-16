@@ -5,19 +5,33 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Button} from 'react-bootstrap';
 import MyMapComponent from './MyMapComponent';
 
-const ContentContainer = styled.div`
+const Container = styled.div`
     display:flex;
-    margin:15px 15px;
     padding-top:15px;
     justify-content:center;
+`;
+const ContentContainer = styled.div`
+    display:flex;
+    justify-content:center;
+    z-index:1;
 `;
 const SubContainer = styled.div`
     display:flex;
     flex-direction:column;
 `;
+const MapArea = styled.div`
+    position: absolute;
+    margin-top:30px;
+    width:800px;
+    height:500px;
+    z-index:-1;
+    align-items:center;
+    justify-content: center;
+    background:purple;
+`;
 const BodySection = styled.div`
     display:flex;
-    padding:0px 15px 15px 15px;
+    padding:0px 5px 5px 5px;
 `;
 
 const SubBodySection = styled.div`
@@ -89,7 +103,8 @@ function InputLocation() {
     }
    
     return (
-        <ContentContainer>
+        <Container>
+            <ContentContainer>
             <SubContainer> 
             {inputList.map((item, index)=>{
                 return (
@@ -110,18 +125,18 @@ function InputLocation() {
                                 <ButtonSection>
                                     {index !== 0 &&(
                                         <Button
-                                            variant="outline-danger"
+                                            variant="danger"
                                             onClick={()=>handleRemoveInput(index)} 
                                         >Remove</Button>              
                                     )}
                                     {inputList.length-1 === index &&  
                                         <>
                                             <Button
-                                                variant="outline-success"
+                                                variant="success"
                                                 onClick={handleAddInput} 
                                             >ADD</Button>
                                             <Button
-                                                variant="outline-primary"
+                                                variant="primary"
                                                 onClick={handleFormat} 
                                             >Test</Button>
                                         </>
@@ -134,8 +149,12 @@ function InputLocation() {
                 );
             })}
            </SubContainer>
-           {/* <MyMapComponent/> */}
-        </ContentContainer>
+           {/* <MapArea>
+               <MyMapComponent/>
+           </MapArea> */}
+           <MapArea/>
+           </ContentContainer>
+        </Container>
     )
 }
 
