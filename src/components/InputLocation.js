@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {useSelector, useDispatch} from 'react-redux';
 import {Button} from 'react-bootstrap';
 import MyMapComponent from './MyMapComponent';
+import DistantCompute from './DistantCompute';
 
 const Container = styled.div`
     display:flex;
@@ -60,13 +61,13 @@ const InputStyled = styled.input`
     flex:1;
 `;
 
-const FromStore = state => state.result;
+
 
 function InputLocation() {
     const [inputList, setinputList] = useState([{location:""}]);
     const dispatch = useDispatch();
-    const test = useSelector(FromStore);
-    console.log("FromStore: ",test)
+    const FromStore = state => state.ReadyToCompute;
+    const CheckToCompute = useSelector(FromStore);
     const handleChange =(e,index)=>{
         const {name, value} =e.target;
         const list = [...inputList];
@@ -97,11 +98,13 @@ function InputLocation() {
             Destination:Destination,
             Waypoints:Waypoints
         }
+        const PreparedData=_.map(inputList, 'location')
 
-        dispatch({type: 'ADD_DATA', payload: {result}})
+        dispatch({type: 'ADD_DATA', payload: {result}});
+        dispatch({type:'COMPUTED_DATA', payload: PreparedData});
+        dispatch({type:'READY_TO_COMPUTE', payload: !CheckToCompute});
         return result
     }
-   
     return (
         <Container>
             <ContentContainer>
@@ -132,6 +135,7 @@ function InputLocation() {
                                     {inputList.length-1 === index &&  
                                         <>
                                             <Button
+                                                disabled={index === 4}
                                                 variant="success"
                                                 onClick={handleAddInput} 
                                             >ADD</Button>
@@ -145,7 +149,6 @@ function InputLocation() {
                             </SubBodyContent2>        
                         </SubBodySection>
                     </BodySection>
-               
                 );
             })}
            </SubContainer>
@@ -154,6 +157,7 @@ function InputLocation() {
            </MapArea> */}
            <MapArea/>
            </ContentContainer>
+           <DistantCompute/>
         </Container>
     )
 }
