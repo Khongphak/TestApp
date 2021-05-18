@@ -3,8 +3,7 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import {useSelector, useDispatch} from 'react-redux';
 import {Button} from 'react-bootstrap';
-import MyMapComponent from './MyMapComponent';
-import DistantCompute from './DistantCompute';
+
 
 const Container = styled.div`
     display:flex;
@@ -20,16 +19,6 @@ const SubContainer = styled.div`
     display:flex;
     flex-direction:column;
 `;
-const MapArea = styled.div`
-    position: absolute;
-    margin-top:30px;
-    width:800px;
-    height:500px;
-    z-index:-1;
-    align-items:center;
-    justify-content: center;
-    background:purple;
-`;
 const BodySection = styled.div`
     display:flex;
     padding:0px 5px 5px 5px;
@@ -41,11 +30,6 @@ const SubBodySection = styled.div`
 `;
 
 const SubBodyContent = styled.div`
-    display:flex;
-    flex:1;
-    justify-content:center;
-`;
-const SubBodyContent2 = styled.div`
     display:flex;
     flex:1;
     justify-content:center;
@@ -124,7 +108,7 @@ function InputLocation() {
                                     />
                                 </div>        
                             </SubBodyContent>
-                            <SubBodyContent2>
+                            <SubBodyContent>
                                 <ButtonSection>
                                     {index !== 0 &&(
                                         <Button
@@ -146,18 +130,13 @@ function InputLocation() {
                                         </>
                                     } 
                                 </ButtonSection>
-                            </SubBodyContent2>        
+                            </SubBodyContent>        
                         </SubBodySection>
                     </BodySection>
                 );
             })}
            </SubContainer>
-           {/* <MapArea>
-               <MyMapComponent/>
-           </MapArea> */}
-           <MapArea/>
            </ContentContainer>
-           <DistantCompute/>
         </Container>
     )
 }

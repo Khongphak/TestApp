@@ -29,7 +29,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   width: 800px;
-  height: 400px;
+  height: 550;
 `;
 
 const MyMapComponent = compose(

@@ -18,7 +18,7 @@ function DistantCompute() {
         let destinations = [dt]; 
         let ExtractNumber;
         MapDistance.key('AIzaSyACtvMFbQlvoFOIuIIl1riC_8IY407ijoE');
-        MapDistance.units('imperial');
+        MapDistance.units('metric');
         MapDistance.matrix(origins, destinations,function(err, distances){
             if (err) {
                 console.log(err);
@@ -30,7 +30,10 @@ function DistantCompute() {
                 let distance = distances.rows[0].elements[0].distance.text;
                 ExtractNumber = distance.split(' ')
                 DistanceArray.push(ExtractNumber[0]);
-                setDistantLists(DistanceArray);
+                setTimeout(() => {
+                    setDistantLists(DistanceArray);
+                }, 1000);
+                
             }if (distances.status === 'REQUEST_DENIED'){
                 console.log('REQUEST_DENIEDDDDD')
             }
@@ -53,7 +56,7 @@ function DistantCompute() {
         let NumberArray = DistantLists.map((item)=>Number(item))
         let SumDistance =  _.sum(NumberArray);
         // console.log('DistantLists',DistantLists);
-        return  <p>{SumDistance}</p>
+        return  <h1>Total {SumDistance} KM</h1>
     }
 
     return (
