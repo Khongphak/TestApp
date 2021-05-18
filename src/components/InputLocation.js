@@ -45,13 +45,15 @@ const InputStyled = styled.input`
     flex:1;
 `;
 
-
-
 function InputLocation() {
-    const [inputList, setinputList] = useState([{location:""}]);
+    const ReadytoCompute = state => state.ReadyToCompute;
+    const CheckToCompute = useSelector(ReadytoCompute);
+    const DataFromStore = state => state.DataForPlaceHolder;
+    const DataForPlaceHolder = useSelector(DataFromStore);
+    const [inputList, setinputList] = useState(DataForPlaceHolder);
     const dispatch = useDispatch();
-    const FromStore = state => state.ReadyToCompute;
-    const CheckToCompute = useSelector(FromStore);
+
+
     const handleChange =(e,index)=>{
         const {name, value} =e.target;
         const list = [...inputList];
@@ -87,8 +89,10 @@ function InputLocation() {
         dispatch({type: 'ADD_DATA', payload: {result}});
         dispatch({type:'COMPUTED_DATA', payload: PreparedData});
         dispatch({type:'READY_TO_COMPUTE', payload: !CheckToCompute});
+        dispatch({type:'DATA_FOR_PLACEHOLDER', payload: inputList})
         return result
     }
+    console.log('inputList',inputList)
     return (
         <Container>
             <ContentContainer>
@@ -102,7 +106,7 @@ function InputLocation() {
                                     <InputStyled 
                                         type="text" 
                                         name="location"  
-                                        placeholder="location" 
+                                        // placeholder={DataForPlaceHolder[index]}
                                         value={item.location}
                                         onChange={(e)=>handleChange(e,index)} 
                                     />

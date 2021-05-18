@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import _ from 'lodash';
+import {useHistory} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 import MyMapComponent from '../components/MyMapComponent';
 import DistantCompute from '../components/DistantCompute';
@@ -49,6 +52,11 @@ const MapBottomSection = styled.div`
     justify-content: ${(props)=>props.AlignLeft? 'flex-start': 'flex-end'};
 `;
 function MainPage() {
+    const history=useHistory();
+    const FromState = state=>state.DataForCompute;
+    const DataFromState = useSelector(FromState);
+    console.log('DataFromState',_.isEmpty(DataFromState))
+
     return (
         <Container>
             <TopContent>
@@ -65,7 +73,13 @@ function MainPage() {
                        <DistantCompute/>
                     </MapBottomSection>
                     <MapBottomSection>
-                        <CustomButton title="Next" fontColor="#FFFFFF" color="green" />
+                        <CustomButton
+                            disable={_.isEmpty(DataFromState)}
+                            onPressButton={()=>history.push('/payment')} 
+                            title="Next" 
+                            fontColor="#FFFFFF" 
+                            color="green" 
+                        />
                     </MapBottomSection>
                 </MapBottomContent>
             </MiddleContent>

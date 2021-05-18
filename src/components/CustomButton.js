@@ -12,9 +12,9 @@ const Container = styled.div`
 const TextButton = styled.div`
     color: ${(props)=> props.fontColor || null};
 `;
-function CustomButton({title, onPressButton, color,fontColor}) {
+function CustomButton({title, onPressButton, color,fontColor, disable}) {
     return (
-        <Container color={color} onClick={onPressButton}>
+        <Container color={color} onClick={disable?null:onPressButton}>
             <TextButton fontColor={fontColor}>{title}</TextButton>
         </Container>
     )

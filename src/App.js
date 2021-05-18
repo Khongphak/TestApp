@@ -1,18 +1,18 @@
-
-
-import {createStore} from 'redux';
-import {Provider} from 'react-redux';
+import {BrowserRouter as Router,Switch, Route} from 'react-router-dom';
 
 import MainPage from './Screen/MainPage';
+import PaymentPage from './Screen/PaymentPage';
 
-import reducer from './redux/reducer';
+
 
 function App() {
-  const store = createStore(reducer);
   return (
-    <Provider store={store}>
-      <MainPage/>
-    </Provider>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={MainPage} />
+          <Route path="/payment" component={PaymentPage}/>
+        </Switch>
+      </Router>     
   );
 }
 

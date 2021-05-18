@@ -1,9 +1,10 @@
 import React,{useState, useEffect} from 'react'
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import MapDistance  from 'google-distance-matrix';
 import _ from 'lodash';
 
 function DistantCompute() {
+    const dispatch = useDispatch();
     const DataForCompute = state=>state.DataForCompute;
     const ReadyToCompute = state=>state.ReadyToCompute;
     const valueForCompute = useSelector(DataForCompute);
@@ -55,6 +56,7 @@ function DistantCompute() {
     const RenderDistant =()=>{
         let NumberArray = DistantLists.map((item)=>Number(item))
         let SumDistance =  _.sum(NumberArray);
+        dispatch({type:'SET_DISTANT_SUM',payload:SumDistance})
         // console.log('DistantLists',DistantLists);
         return  <h1>Total {SumDistance} KM</h1>
     }

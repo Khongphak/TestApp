@@ -60,13 +60,11 @@ const MyMapComponent = compose(
   withGoogleMap,
   lifecycle({
     componentWillMount() {
-      console.log('From Map WillMount: ',this.props.StatePlace);
       this.setState({
         newDirections: [],
       });
     },
     componentDidUpdate(prevProps, prevState) {
-      console.log('From Map DidUpdate: ',prevProps.StatePlace.Origin.location);
       if (prevProps.StatePlace !== this.props.StatePlace) {
            this.setState({
               directions: null,
@@ -75,7 +73,6 @@ const MyMapComponent = compose(
       }
     },
     componentDidMount() {
-      console.log('From Map DidMount: ',this.props.StatePlace);
       this.drawRoutes();
     },
     drawRoutes(){

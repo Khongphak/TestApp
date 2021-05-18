@@ -1,12 +1,15 @@
 const initialState ={
     result:{
-        Origin:{location:"Bangkok"},
-        Destination:{location:"Loei"},
-        Waypoints:[{location:"Nakhonsawan"},{location:"Saraburi"}]
+        Origin:{location:""},
+        Destination:{location:""},
+        Waypoints:[{location:""},]
     },
+    DataForPlaceHolder:[{location:""}],
     DataForCompute:[],
     ReadyToCompute:false,
+    DistantSummary:0
 }
+console.log('initialState',initialState)
 const reducer =(state= initialState,action)=>{
     switch(action.type){
         case `ADD_DATA`: 
@@ -27,6 +30,18 @@ const reducer =(state= initialState,action)=>{
                 ReadyToCompute:action.payload
             };
             return computedDistance;
+        case `DATA_FOR_PLACEHOLDER`:
+            const placeholderValues={
+                ...state,
+                DataForPlaceHolder:action.payload
+            }
+            return placeholderValues;
+        case `SET_DISTANT_SUM`:
+            const distantsum={
+                ...state,
+                DistantSummary:action.payload
+            }
+            return distantsum;
         default:
             break;
     }

@@ -1,4 +1,6 @@
 import React,{useState} from 'react';
+import {useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components';
 import {Modal} from 'react-bootstrap';
 
@@ -70,6 +72,14 @@ const BottomSubContentContainer = styled.div`
     justify-content:${(props)=>props.alignRight? 'flex-end': 'flex-start'};
 `;
 function PaymentPage() {
+    const history=useHistory();
+
+    const FromStore=state=>state.DataForCompute;
+    const LocationName= useSelector(FromStore);
+    const DistanceFromStore=state=>state.DistantSummary;
+    const DistanceSum= useSelector(DistanceFromStore);
+    console.log('DistanceSum', DistanceSum);
+
     const [showModal, setShowModal] = useState(false);
     const handleShowModal=()=>{
         setShowModal(true);
@@ -77,14 +87,22 @@ function PaymentPage() {
     const handleCloseModal=()=>{
         setShowModal(false)
     }
-    return (
-        <Container>
-            <ContentContainer>
-                <TopContainer>
-                    <TopContentContainer>
-                        <InputSection>
+    const handlerComputeFee=()=>{
+        let total;
+        total = DistanceSum*15;
+        return (
+            <p>{total} THB</p>
+        )
+    }
+    const RenderLocation=()=>{
+        return( 
+            <>
+                {LocationName.map((item,index)=>{
+                    return(
+                        <TopContentContainer key={index}>
+                        <InputSection >
                             <InputSectionTop>
-                                <h3>A</h3>
+                                <h3>{item}</h3>
                             </InputSectionTop>
                             <InputSectionBottom>
                                 <InputSubSection>
@@ -95,12 +113,25 @@ function PaymentPage() {
                                 </InputSubSection>
                             </InputSectionBottom>
                         </InputSection>
-                    </TopContentContainer>
+                        </TopContentContainer>
+                    )
+                })}
+            </>
+        )
+    }
+    return (
+        <Container>
+            <ContentContainer>
+                <TopContainer>
+                   {RenderLocation()}
                 </TopContainer>
                 <MiddleContainer>
                     <MiddleContentContainer>
                         <p>Extra services</p>
-                        <CustomButton title="Extra Services" onPressButton={()=>handleShowModal()} />
+                        <CustomButton 
+                            title="Extra Services" 
+                            onPressButton={()=>handleShowModal()} 
+                        />
                     </MiddleContentContainer>
                     <MiddleContentContainer>
                         <p>div</p>
@@ -113,7 +144,7 @@ function PaymentPage() {
                             <p>Total distance</p>
                         </BottomSubContentContainer>
                         <BottomSubContentContainer alignRight>
-                            <p>... KM.</p>
+                            <p>{DistanceSum} KM.</p>
                         </BottomSubContentContainer>
                     </BottomContentContainer>
                     <BottomContentContainer>
@@ -121,15 +152,23 @@ function PaymentPage() {
                             <p>Fee</p>
                         </BottomSubContentContainer>
                         <BottomSubContentContainer alignRight>
-                            <p>... THB</p>
+                           {handlerComputeFee()}
                         </BottomSubContentContainer>    
                     </BottomContentContainer>
                     <BottomContentContainer>
                         <BottomSubContentContainer>
-                            <CustomButton title="Back" onPressButton={()=>console.log("Back")} />
+                            <CustomButton 
+                                title="Back" 
+                                onPressButton={()=>history.push('/')}
+                            />
                         </BottomSubContentContainer>  
                         <BottomSubContentContainer>
-                            <CustomButton title="Confirm" color="green" fontColor="#FFFFFF" onPressButton={()=>console.log("Confrim")} />
+                            <CustomButton 
+                                title="Confirm" 
+                                color="green" 
+                                fontColor="#FFFFFF" 
+                                onPressButton={()=>console.log("Confrim")} 
+                            />
                         </BottomSubContentContainer>   
                     </BottomContentContainer>
                 </BottomContainer>
@@ -139,7 +178,12 @@ function PaymentPage() {
                     <h1>Extra Services</h1>
                     <PaymentPopUp/>
                     <div style={{display:'flex',justifyContent:'center'}}>
-                        <CustomButton title="Confirm" color="green" fontColor="#FFFFFF" onPressButton={()=>handleCloseModal()} />
+                        <CustomButton 
+                            title="Confirm" 
+                            color="green" 
+                            fontColor="#FFFFFF" 
+                            onPressButton={()=>handleCloseModal()} 
+                        />
                     </div>
                 </Modal.Body>
             </Modal>
