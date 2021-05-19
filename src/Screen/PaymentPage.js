@@ -8,10 +8,10 @@ import Banknote from '../assets/banknote.png';
 import cycleArrow from '../assets/cycleArrow.png';
 import parcel from '../assets/parcel.png';
 
-import CustomButton from '../components/CustomButton';
-import CustomModal from '../components/CustomModal';
-import PaymentPopUp from '../components/PaymentPopUp';
-import PaymentConfirmPopUP from '../components/PaymentConfirmPopUP';
+import CustomButton from '../components/reusable/CustomButton';
+import CustomModal from '../components/reusable/CustomModal';
+import PaymentPopUp from '../components/PaymentComponent/PaymentPopUp';
+import PaymentConfirmPopUP from '../components/PaymentComponent/PaymentConfirmPopUP';
 
 const Container = styled.div`
     display:flex;

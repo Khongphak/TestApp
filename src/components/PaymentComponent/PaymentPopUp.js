@@ -4,9 +4,9 @@ import _ from 'lodash';
 
 import CheckboxItems from './CheckboxItems'
 
-import Banknote from '../assets/banknote.png';
-import cycleArrow from '../assets/cycleArrow.png';
-import parcel from '../assets/parcel.png';
+import Banknote from '../../assets/banknote.png';
+import cycleArrow from '../../assets/cycleArrow.png';
+import parcel from '../../assets/parcel.png';
 
 const Container = styled.div`
     display:flex;

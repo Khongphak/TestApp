@@ -4,10 +4,10 @@ import _ from 'lodash';
 import {useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
-import MyMapComponent from '../components/MyMapComponent';
-import DistantCompute from '../components/DistantCompute';
-import CustomButton from '../components/CustomButton';
-import InputLocation from '../components/InputLocation';
+import MyMapComponent from '../components/MainPageComponent/MyMapComponent';
+import DistantCompute from '../components/MainPageComponent/DistantCompute';
+import CustomButton from '../components/reusable/CustomButton';
+import InputLocation from '../components/MainPageComponent/InputLocation';
 
 const Container = styled.div`
     display:flex;
