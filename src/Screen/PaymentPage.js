@@ -2,11 +2,16 @@ import React,{useEffect,useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components';
-import {Modal} from 'react-bootstrap';
 import _ from 'lodash';
 
+import Banknote from '../assets/banknote.png';
+import cycleArrow from '../assets/cycleArrow.png';
+import parcel from '../assets/parcel.png';
+
 import CustomButton from '../components/CustomButton';
+import CustomModal from '../components/CustomModal';
 import PaymentPopUp from '../components/PaymentPopUp';
+import PaymentConfirmPopUP from '../components/PaymentConfirmPopUP';
 
 const Container = styled.div`
     display:flex;
@@ -33,12 +38,12 @@ const InputSection = styled.div`
 `;
 const InputSectionTop = styled.div`
     display:flex;
-    margin-bottom:15px;
+    margin-bottom:20px;
 `;
 const InputSectionBottom = styled.div`
     display: flex;
     margin-top:-15px;
-    margin-bottom:15px;
+    margin-bottom:30px;
     align-self:center; 
     padding:0px 15px;
 `;
@@ -73,6 +78,12 @@ const BottomSubContentContainer = styled.div`
     flex:1;
     padding:0px 15px;
     justify-content:${(props)=>props.alignRight? 'flex-end': 'flex-start'};
+`;
+
+const Thumbnail = styled.img`
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
 `;
 function PaymentPage() {
     const history=useHistory();
@@ -126,12 +137,35 @@ function PaymentPage() {
         setInputList(list);
     }
    
-    const handlerComputeFee=()=>{
+    const handlerComputeFee=(e)=>{
         let total;
-        total = DistanceSum*15;
-        return (
-            <p>{total} THB</p>
-        )
+        let COD=0;
+        let RTrip=0;
+        let BParcel=0;
+        if(_.includes(e,1) && _.includes(e,2) && _.includes(e,3)){
+            COD=50;
+            RTrip=100;
+            BParcel=200;
+        }
+        else if(_.includes(e,2) && _.includes(e,3)){
+            RTrip=100;
+            BParcel=200;
+        }else if(_.includes(e,1) && _.includes(e,2)){
+            COD=50;
+            RTrip=100;
+        }
+        else if(_.includes(e,2)){
+            RTrip=100;
+        }
+        else if(_.includes(e,3)){
+            BParcel=200;
+        }
+        else if(_.includes(e,1)){
+            COD=50;
+        }
+
+        total = (DistanceSum*15)+COD+RTrip+BParcel;
+        return <p>{total} THB</p>
     }
 
     const getExtraService=(e)=>{
@@ -140,8 +174,8 @@ function PaymentPage() {
     const ConfirmServices =()=>{
         handleCloseModal();
         setExtraServices(valueServices);
-    } 
-    console.log('ExtraServices',ExtraServices);
+    }
+
     const RenderLocation=()=>{
         return( 
             <>
@@ -192,8 +226,9 @@ function PaymentPage() {
                         />
                     </MiddleContentContainer>
                     <MiddleContentContainer>
-                        <p>{ExtraServices}</p>
-                       
+                        {_.includes(ExtraServices,1)?<Thumbnail src={Banknote} />:null}
+                        {_.includes(ExtraServices,2)?<Thumbnail src={cycleArrow} />:null}
+                        {_.includes(ExtraServices,3)?<Thumbnail src={parcel} />:null}
                     </MiddleContentContainer>
                 </MiddleContainer>
                 <BottomContainer>
@@ -210,7 +245,7 @@ function PaymentPage() {
                             <p>Fee</p>
                         </BottomSubContentContainer>
                         <BottomSubContentContainer alignRight>
-                           {handlerComputeFee()}
+                           {handlerComputeFee(ExtraServices)}
                         </BottomSubContentContainer>    
                     </BottomContentContainer>
                     <BottomContentContainer>
@@ -232,49 +267,42 @@ function PaymentPage() {
                     </BottomContentContainer>
                 </BottomContainer>
             </ContentContainer>
-            <Modal show={showModal} onHide={handleCloseModal}>
-                <Modal.Body style={{justifyItems:'center'}} >
-                    <h1>Extra Services</h1>
-                    <PaymentPopUp onPressGetService={(e)=>getExtraService(e)} />
-                    <div style={{display:'flex',justifyContent:'center'}}>
-                        <CustomButton 
-                            title="Confirm" 
-                            color="green" 
-                            fontColor="#FFFFFF" 
-                            onPressButton={()=>ConfirmServices()} 
-                        />
-                    </div>
-                </Modal.Body>
-            </Modal>
 
-            <Modal show={showModal2} onHide={handleCloseModal2}>
-                <Modal.Body style={{justifyItems:'center'}} >
-                    <h1>Success</h1>
-                    {_.isNil(inputList) ? 
-                        <div>No Item</div> :
-                        <div>
-                            {inputList.map((item,index)=>{
-                            return(
-                                <div key={index}>
-                                    <div> {item.user}</div>
-                                    <div> {item.mobile}</div>
-                                    <div> {item.location}</div>  
-                                </div>
-                            )
-                        })}
-                        </div>
-                    }
-                   
-                    <div style={{display:'flex',justifyContent:'center'}}>
-                        <CustomButton 
-                            title="Confirm" 
-                            color="green" 
-                            fontColor="#FFFFFF" 
-                            onPressButton={()=>handleCloseModal2()} 
-                        />
+
+            <CustomModal headerTitle="Extra Services" showProps={showModal} onHide={handleCloseModal}>
+                <PaymentPopUp onPressGetService={(e)=>getExtraService(e)} />
+                <div style={{display:'flex',justifyContent:'center'}}>
+                    <CustomButton 
+                        title="Confirm" 
+                        color="green" 
+                        fontColor="#FFFFFF" 
+                        onPressButton={()=>ConfirmServices()} 
+                    />
+                </div>
+            </CustomModal>
+
+            <CustomModal headerTitle="Success" showProps={showModal2} onHide={handleCloseModal2}>
+                {_.isNil(inputList) ? 
+                    <div>No Item</div> :
+                    <div>
+                        {inputList.map((item,index)=>{
+                        return(
+                            <div key={index}>
+                                <PaymentConfirmPopUP data={item}/>
+                            </div>
+                        )
+                    })}
                     </div>
-                </Modal.Body>
-            </Modal>
+                }
+                <div style={{display:'flex',justifyContent:'center'}}>
+                    <CustomButton 
+                        title="Confirm" 
+                        color="green" 
+                        fontColor="#FFFFFF" 
+                        onPressButton={()=>handleCloseModal2()} 
+                    />
+                </div>
+            </CustomModal>
         </Container>
     )
 }

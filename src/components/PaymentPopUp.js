@@ -4,6 +4,10 @@ import _ from 'lodash';
 
 import CheckboxItems from './CheckboxItems'
 
+import Banknote from '../assets/banknote.png';
+import cycleArrow from '../assets/cycleArrow.png';
+import parcel from '../assets/parcel.png';
+
 const Container = styled.div`
     display:flex;
     flex-direction: column;
@@ -18,10 +22,16 @@ const ContentSection = styled.div`
     justify-content: ${(props)=>props.alignLeft ? 'flex-start': 'center'}
     
 `;
+const Thumbnail = styled.img`
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+`;
+
 const Data=[
-    {id:1,icon:'',text:'COD +50 THB'},
-    {id:2,icon:'',text:'Return Trip +100 THB'},
-    {id:3,icon:'',text:'Big parcel +200 THB'},
+    {id:1,image:Banknote,text:'COD +50 THB'},
+    {id:2,image:cycleArrow,text:'Return Trip +100 THB'},
+    {id:3,image:parcel,text:'Big parcel +200 THB'},
 ]
 function PaymentPopUp({onPressGetService}) {
     const [ValueID, setValueID] = useState([]);
@@ -50,7 +60,7 @@ function PaymentPopUp({onPressGetService}) {
                 return(
                 <ContentWrapper key={index}>
                     <ContentSection>
-                        <h3>Icon ... </h3>
+                        <Thumbnail src={item.image} alt="test"/>
                     </ContentSection>
                     <ContentSection alignLeft>
                         <h6>{item.text}</h6>
