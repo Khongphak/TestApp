@@ -92,7 +92,7 @@ function InputLocation() {
         dispatch({type:'DATA_FOR_PLACEHOLDER', payload: inputList})
         return result
     }
-    console.log('inputList',inputList)
+ 
     return (
         <Container>
             <ContentContainer>
@@ -127,6 +127,10 @@ function InputLocation() {
                                                 variant="success"
                                                 onClick={handleAddInput} 
                                             >ADD</Button>
+                                        </>
+                                    } 
+                                    {inputList.length-1 === index && index !== 0 &&  
+                                        <>
                                             <Button
                                                 variant="primary"
                                                 onClick={handleFormat} 

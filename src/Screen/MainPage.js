@@ -55,7 +55,6 @@ function MainPage() {
     const history=useHistory();
     const FromState = state=>state.DataForCompute;
     const DataFromState = useSelector(FromState);
-    console.log('DataFromState',_.isEmpty(DataFromState))
 
     return (
         <Container>
@@ -78,7 +77,7 @@ function MainPage() {
                             onPressButton={()=>history.push('/payment')} 
                             title="Next" 
                             fontColor="#FFFFFF" 
-                            color="green" 
+                            color={_.isEmpty(DataFromState) ? 'grey' : 'green'}
                         />
                     </MapBottomSection>
                 </MapBottomContent>

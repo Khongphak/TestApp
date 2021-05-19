@@ -12,7 +12,6 @@ function DistantCompute() {
 
     let DistanceArray=[];
     const [DistantLists, setDistantLists] = useState([]);
-    console.log('DistantLists1',DistantLists);
     
     const getDistance =(og,dt)=>{
         let origins = [og];
@@ -57,7 +56,6 @@ function DistantCompute() {
         let NumberArray = DistantLists.map((item)=>Number(item))
         let SumDistance =  _.sum(NumberArray);
         dispatch({type:'SET_DISTANT_SUM',payload:SumDistance})
-        // console.log('DistantLists',DistantLists);
         return  <h1>Total {SumDistance} KM</h1>
     }
 

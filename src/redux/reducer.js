@@ -9,7 +9,6 @@ const initialState ={
     ReadyToCompute:false,
     DistantSummary:0
 }
-console.log('initialState',initialState)
 const reducer =(state= initialState,action)=>{
     switch(action.type){
         case `ADD_DATA`: 

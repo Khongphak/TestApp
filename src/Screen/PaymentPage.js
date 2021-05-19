@@ -1,11 +1,13 @@
-import React,{useState} from 'react';
+import React,{useEffect,useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components';
 import {Modal} from 'react-bootstrap';
+import _ from 'lodash';
 
-import CustomButton from '../components/CustomButton'
-import PaymentPopUp from '../components/PaymentPopUp'
+import CustomButton from '../components/CustomButton';
+import PaymentPopUp from '../components/PaymentPopUp';
+
 const Container = styled.div`
     display:flex;
     justify-content: center;
@@ -31,6 +33,7 @@ const InputSection = styled.div`
 `;
 const InputSectionTop = styled.div`
     display:flex;
+    margin-bottom:15px;
 `;
 const InputSectionBottom = styled.div`
     display: flex;
@@ -78,15 +81,51 @@ function PaymentPage() {
     const LocationName= useSelector(FromStore);
     const DistanceFromStore=state=>state.DistantSummary;
     const DistanceSum= useSelector(DistanceFromStore);
-    console.log('DistanceSum', DistanceSum);
+
+    const [inputList, setInputList] = useState()
+    const [valueServices, setValueServices] = useState();
+    const [ExtraServices, setExtraServices] = useState();
 
     const [showModal, setShowModal] = useState(false);
-    const handleShowModal=()=>{
-        setShowModal(true);
+    const handleShowModal=()=>setShowModal(true);
+    const handleCloseModal=()=>setShowModal(false);
+
+    const [showModal2, setShowModal2] = useState(false);
+    const handleShowModal2=()=>setShowModal2(true);
+    const handleCloseModal2=()=>setShowModal2(false);
+    
+    const CheckUser = _.map(inputList, 'user');
+    const CheckMobile =_.map(inputList, 'mobile');
+    const checkUndefined = !_.some(CheckUser, _.isEmpty) && !_.some(CheckMobile, _.isEmpty)
+    
+    const handleAdd =()=>{
+        let ObjectInUseState= []
+        for(let i=0; i<LocationName.length;i++){
+            ObjectInUseState.push({
+                user:"",
+                mobile:"",
+                location:LocationName[i]
+            });
+        }  
+        setInputList(ObjectInUseState);
     }
-    const handleCloseModal=()=>{
-        setShowModal(false)
+
+    useEffect(() => {
+        handleAdd();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const handleSubmit=()=>{
+        handleShowModal2();
     }
+    
+    const handleChange =(e,index)=>{
+        const {name, value} =e.target;
+        const list = [...inputList];
+        list[index][name] = value;
+        setInputList(list);
+    }
+   
     const handlerComputeFee=()=>{
         let total;
         total = DistanceSum*15;
@@ -94,6 +133,15 @@ function PaymentPage() {
             <p>{total} THB</p>
         )
     }
+
+    const getExtraService=(e)=>{
+        setValueServices(e)
+    }
+    const ConfirmServices =()=>{
+        handleCloseModal();
+        setExtraServices(valueServices);
+    } 
+    console.log('ExtraServices',ExtraServices);
     const RenderLocation=()=>{
         return( 
             <>
@@ -106,10 +154,20 @@ function PaymentPage() {
                             </InputSectionTop>
                             <InputSectionBottom>
                                 <InputSubSection>
-                                    <input/>
+                                    <input 
+                                        type="text" 
+                                        name="user" 
+                                        placeholder="user"
+                                        onChange={(e)=>handleChange(e,index)} 
+                                    />
                                 </InputSubSection>
                                 <InputSubSection >
-                                    <input/>
+                                    <input 
+                                        type="text" 
+                                        name="mobile"
+                                        placeholder="mobile"
+                                        onChange={(e)=>handleChange(e,index)} 
+                                    />
                                 </InputSubSection>
                             </InputSectionBottom>
                         </InputSection>
@@ -134,8 +192,8 @@ function PaymentPage() {
                         />
                     </MiddleContentContainer>
                     <MiddleContentContainer>
-                        <p>div</p>
-                        <p>div</p>
+                        <p>{ExtraServices}</p>
+                       
                     </MiddleContentContainer>
                 </MiddleContainer>
                 <BottomContainer>
@@ -163,11 +221,12 @@ function PaymentPage() {
                             />
                         </BottomSubContentContainer>  
                         <BottomSubContentContainer>
-                            <CustomButton 
+                            <CustomButton
+                                disable={!checkUndefined}
                                 title="Confirm" 
-                                color="green" 
+                                color={!checkUndefined? 'grey': 'green'} 
                                 fontColor="#FFFFFF" 
-                                onPressButton={()=>console.log("Confrim")} 
+                                onPressButton={()=>handleSubmit()} 
                             />
                         </BottomSubContentContainer>   
                     </BottomContentContainer>
@@ -176,13 +235,42 @@ function PaymentPage() {
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Body style={{justifyItems:'center'}} >
                     <h1>Extra Services</h1>
-                    <PaymentPopUp/>
+                    <PaymentPopUp onPressGetService={(e)=>getExtraService(e)} />
                     <div style={{display:'flex',justifyContent:'center'}}>
                         <CustomButton 
                             title="Confirm" 
                             color="green" 
                             fontColor="#FFFFFF" 
-                            onPressButton={()=>handleCloseModal()} 
+                            onPressButton={()=>ConfirmServices()} 
+                        />
+                    </div>
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={showModal2} onHide={handleCloseModal2}>
+                <Modal.Body style={{justifyItems:'center'}} >
+                    <h1>Success</h1>
+                    {_.isNil(inputList) ? 
+                        <div>No Item</div> :
+                        <div>
+                            {inputList.map((item,index)=>{
+                            return(
+                                <div key={index}>
+                                    <div> {item.user}</div>
+                                    <div> {item.mobile}</div>
+                                    <div> {item.location}</div>  
+                                </div>
+                            )
+                        })}
+                        </div>
+                    }
+                   
+                    <div style={{display:'flex',justifyContent:'center'}}>
+                        <CustomButton 
+                            title="Confirm" 
+                            color="green" 
+                            fontColor="#FFFFFF" 
+                            onPressButton={()=>handleCloseModal2()} 
                         />
                     </div>
                 </Modal.Body>
