@@ -2,8 +2,11 @@ import React,{useState} from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
 import {useSelector, useDispatch} from 'react-redux';
-import {Button} from 'react-bootstrap';
 
+
+import AddIcon from '../../assets/AddIcon.png';
+import RemoveIcon from '../../assets/RemoveIcon.png';
+import GoIcon from '../../assets/GoIcon.png';
 
 const Container = styled.div`
     display:flex;
@@ -38,11 +41,20 @@ const SubBodyContent = styled.div`
 const ButtonSection = styled.div`
     display:flex;
     flex-direction: column;
+    margin-top:-5px;
     margin-right:15px;  
+
+
 `; 
 const InputStyled = styled.input`
     display:flex;
     flex:1;
+`;
+
+const Thumbnail = styled.img`
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
 `;
 
 function InputLocation() {
@@ -53,6 +65,9 @@ function InputLocation() {
     const [inputList, setinputList] = useState(DataForPlaceHolder);
     const dispatch = useDispatch();
 
+    let mappItem=inputList.map((item)=>item.location);
+    const lastIndex=mappItem[mappItem.length-1]
+    console.log(_.isEmpty(lastIndex));
 
     const handleChange =(e,index)=>{
         const {name, value} =e.target;
@@ -115,27 +130,13 @@ function InputLocation() {
                             <SubBodyContent>
                                 <ButtonSection>
                                     {index !== 0 &&(
-                                        <Button
-                                            variant="danger"
-                                            onClick={()=>handleRemoveInput(index)} 
-                                        >Remove</Button>              
+                                        <Thumbnail src={RemoveIcon} alt="test" onClick={()=>handleRemoveInput(index)}/>    
                                     )}
                                     {inputList.length-1 === index &&  
-                                        <>
-                                            <Button
-                                                disabled={index === 4}
-                                                variant="success"
-                                                onClick={handleAddInput} 
-                                            >ADD</Button>
-                                        </>
+                                        <Thumbnail src={AddIcon} alt="test" onClick={handleAddInput}/>  
                                     } 
-                                    {inputList.length-1 === index && index !== 0 &&  
-                                        <>
-                                            <Button
-                                                variant="primary"
-                                                onClick={handleFormat} 
-                                            >Test</Button>
-                                        </>
+                                    {inputList.length-1 === index && index !== 0 &&  !_.isEmpty(lastIndex) &&
+                                        <Thumbnail src={GoIcon} alt="test" onClick={handleFormat }/>
                                     } 
                                 </ButtonSection>
                             </SubBodyContent>        

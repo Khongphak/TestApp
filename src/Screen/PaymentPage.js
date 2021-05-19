@@ -7,6 +7,7 @@ import _ from 'lodash';
 import Banknote from '../assets/banknote.png';
 import cycleArrow from '../assets/cycleArrow.png';
 import parcel from '../assets/parcel.png';
+import AddIcon from '../assets/AddIcon.png';
 
 import CustomButton from '../components/reusable/CustomButton';
 import CustomModal from '../components/reusable/CustomModal';
@@ -81,8 +82,9 @@ const BottomSubContentContainer = styled.div`
 `;
 
 const Thumbnail = styled.img`
-  width: 90px;
-  height: 90px;
+  width: ${(props)=>props.wide?props.wide:'90px'};
+  height: ${(props)=>props.high?props.high:'90px'};
+  margin-left:15px;
   border-radius: 10px;
 `;
 function PaymentPage() {
@@ -197,7 +199,8 @@ function PaymentPage() {
                                 </InputSubSection>
                                 <InputSubSection >
                                     <input 
-                                        type="text" 
+                                        type="number" 
+                                        pattern="[0-9]*"
                                         name="mobile"
                                         placeholder="mobile"
                                         onChange={(e)=>handleChange(e,index)} 
@@ -219,11 +222,15 @@ function PaymentPage() {
                 </TopContainer>
                 <MiddleContainer>
                     <MiddleContentContainer>
-                        <p>Extra services</p>
-                        <CustomButton 
+                        <div style={{display:'flex',alignItems:'center'}}>
+                            <h4>Extra services</h4>
+                            <Thumbnail wide="40px" high="40px" src={AddIcon} onClick={()=>handleShowModal()} />
+                        </div>
+                        
+                        {/* <CustomButton 
                             title="Extra Services" 
                             onPressButton={()=>handleShowModal()} 
-                        />
+                        /> */}
                     </MiddleContentContainer>
                     <MiddleContentContainer>
                         {_.includes(ExtraServices,1)?<Thumbnail src={Banknote} />:null}
@@ -234,15 +241,15 @@ function PaymentPage() {
                 <BottomContainer>
                     <BottomContentContainer>
                         <BottomSubContentContainer>
-                            <p>Total distance</p>
+                            <h6>Total distance</h6>
                         </BottomSubContentContainer>
                         <BottomSubContentContainer alignRight>
-                            <p>{DistanceSum} KM.</p>
+                            <p>{DistanceSum} KM</p>
                         </BottomSubContentContainer>
                     </BottomContentContainer>
                     <BottomContentContainer>
                         <BottomSubContentContainer>
-                            <p>Fee</p>
+                            <h6>Fee</h6>
                         </BottomSubContentContainer>
                         <BottomSubContentContainer alignRight>
                            {handlerComputeFee(ExtraServices)}
@@ -299,7 +306,7 @@ function PaymentPage() {
                         title="Confirm" 
                         color="green" 
                         fontColor="#FFFFFF" 
-                        onPressButton={()=>handleCloseModal2()} 
+                        onPressButton={()=>history.push('/')} 
                     />
                 </div>
             </CustomModal>

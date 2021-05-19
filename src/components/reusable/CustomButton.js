@@ -8,6 +8,7 @@ const Container = styled.div`
     align-items:center;
     border-radius:5px;
     background-color: ${(props)=> props.color || '#ebeced'};
+    cursor: pointer;
 `;
 const TextButton = styled.div`
     color: ${(props)=> props.fontColor || null};

@@ -81,12 +81,17 @@ const MyMapComponent = compose(
         origin: _.get(this.props, 'StatePlace.Origin.location'),
         waypoints: _.get(this.props,'StatePlace.Waypoints'),
         destination: _.get(this.props, 'StatePlace.Destination.location'),
+        optimizeWaypoints: true,
+        provideRouteAlternatives: true,
+        avoidTolls: true,
+        avoidHighways: true,
         travelMode: window.google.maps.TravelMode.DRIVING,
       }, (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
           this.setState({
             directions: result,
           });
+          console.log(result)
         } else {
           console.error(`error fetching directions ${result}`);
         }
