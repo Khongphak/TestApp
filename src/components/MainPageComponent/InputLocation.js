@@ -67,7 +67,7 @@ function InputLocation() {
 
     let mappItem=inputList.map((item)=>item.location);
     const lastIndex=mappItem[mappItem.length-1]
-    console.log(_.isEmpty(lastIndex));
+
 
     const handleChange =(e,index)=>{
         const {name, value} =e.target;

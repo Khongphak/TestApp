@@ -7,7 +7,8 @@ const initialState ={
     DataForPlaceHolder:[{location:""}],
     DataForCompute:[],
     ReadyToCompute:false,
-    DistantSummary:0
+    DistantSummary:0,
+    resultSummary:[]
 }
 const reducer =(state= initialState,action)=>{
     switch(action.type){
@@ -41,6 +42,13 @@ const reducer =(state= initialState,action)=>{
                 DistantSummary:action.payload
             }
             return distantsum;
+        case `SET_SUMMARY_DATA`:
+            const dataSum={
+                ...state,
+                resultSummary:action.payload
+            }
+            console.log(dataSum)
+            return dataSum;
         default:
             break;
     }

@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components';
 import _ from 'lodash';
@@ -89,6 +89,7 @@ const Thumbnail = styled.img`
 `;
 function PaymentPage() {
     const history=useHistory();
+    const dispatch=useDispatch();
 
     const FromStore=state=>state.DataForCompute;
     const LocationName= useSelector(FromStore);
@@ -138,6 +139,14 @@ function PaymentPage() {
         list[index][name] = value;
         setInputList(list);
     }
+
+    const handleRemoveService=(id)=>{
+        let ServiceList =[...ExtraServices]
+        let ServicesLeft= _.remove(ServiceList,function(e){
+            return e!==id;
+        })
+        setExtraServices(ServicesLeft)
+    }
    
     const handlerComputeFee=(e)=>{
         let total;
@@ -167,7 +176,7 @@ function PaymentPage() {
         }
 
         total = (DistanceSum*15)+COD+RTrip+BParcel;
-        return <p>{total} THB</p>
+        return `${total} THB`
     }
 
     const getExtraService=(e)=>{
@@ -176,6 +185,19 @@ function PaymentPage() {
     const ConfirmServices =()=>{
         handleCloseModal();
         setExtraServices(valueServices);
+    }
+    const handlerSubmit=()=>{
+        console.log(inputList);
+        console.log(DistanceSum);
+        console.log(handlerComputeFee(ExtraServices));
+        let AllSummary={
+            Reciever:inputList,
+            Distant:DistanceSum,
+            Price:handlerComputeFee(ExtraServices)
+        }
+        dispatch({type:'SET_SUMMARY_DATA',payload:AllSummary})
+        history.push('/');
+       
     }
 
     const RenderLocation=()=>{
@@ -224,18 +246,16 @@ function PaymentPage() {
                     <MiddleContentContainer>
                         <div style={{display:'flex',alignItems:'center'}}>
                             <h4>Extra services</h4>
+                            
                             <Thumbnail wide="40px" high="40px" src={AddIcon} onClick={()=>handleShowModal()} />
                         </div>
                         
-                        {/* <CustomButton 
-                            title="Extra Services" 
-                            onPressButton={()=>handleShowModal()} 
-                        /> */}
                     </MiddleContentContainer>
                     <MiddleContentContainer>
-                        {_.includes(ExtraServices,1)?<Thumbnail src={Banknote} />:null}
-                        {_.includes(ExtraServices,2)?<Thumbnail src={cycleArrow} />:null}
-                        {_.includes(ExtraServices,3)?<Thumbnail src={parcel} />:null}
+                        {_.includes(ExtraServices,1)?<Thumbnail src={Banknote} onClick={()=>handleRemoveService(1)} />:null}
+                        {_.includes(ExtraServices,2)?<Thumbnail src={cycleArrow} onClick={()=>handleRemoveService(2)} />:null}
+                        {_.includes(ExtraServices,3)?<Thumbnail src={parcel} onClick={()=>handleRemoveService(3)} />:null}
+                        {!_.isEmpty(ExtraServices)?<sup>*click for deleting</sup>:null}
                     </MiddleContentContainer>
                 </MiddleContainer>
                 <BottomContainer>
@@ -299,14 +319,23 @@ function PaymentPage() {
                             </div>
                         )
                     })}
+                        <div 
+                            style={{
+                                marginLeft:140,
+                            }}
+                        >
+                            <h5>Total distance is {DistanceSum} KM</h5>
+                            <h5>Total price is {handlerComputeFee(ExtraServices)}</h5>
+                        </div>
                     </div>
+                    
                 }
                 <div style={{display:'flex',justifyContent:'center'}}>
                     <CustomButton 
                         title="Confirm" 
                         color="green" 
                         fontColor="#FFFFFF" 
-                        onPressButton={()=>history.push('/')} 
+                        onPressButton={()=>handlerSubmit()} 
                     />
                 </div>
             </CustomModal>

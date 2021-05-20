@@ -1,4 +1,3 @@
-
 import React from 'react';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
@@ -91,7 +90,6 @@ const MyMapComponent = compose(
           this.setState({
             directions: result,
           });
-          console.log(result)
         } else {
           console.error(`error fetching directions ${result}`);
         }

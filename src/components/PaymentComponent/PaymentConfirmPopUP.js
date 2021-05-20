@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Container = styled.div`
     display:flex;
     justify-content:center;
-    padding:15px;
+    margin-bottom:15px;
   
 `;
 const ContentContainer = styled.div`
@@ -24,14 +24,14 @@ function PaymentConfirmPopUP({data}) {
         <Container>
             <ContentContainer>
                 <SubContent>
-                    <div> name:</div>
-                    <div> mobile:</div>
-                    <div> location:</div>  
+                    <h5> name:</h5>
+                    <h5> mobile:</h5>
+                    <h5> location:</h5>  
                 </SubContent>
                 <SubContent>
-                    <div> {data.user}</div>
-                    <div> {data.mobile}</div>
-                    <div> {data.location}</div>  
+                    <h5> {data.user}</h5>
+                    <h5> {data.mobile}</h5>
+                    <h5> {data.location}</h5>  
                 </SubContent>
             </ContentContainer>
         </Container>
