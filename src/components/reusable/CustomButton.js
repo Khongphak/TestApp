@@ -8,14 +8,14 @@ const Container = styled.div`
     align-items:center;
     border-radius:5px;
     background-color: ${(props)=> props.color || '#ebeced'};
-    cursor: pointer;
+    cursor: ${(props)=>props.pointerDisable? 'not-allowed':'pointer'};
 `;
 const TextButton = styled.div`
     color: ${(props)=> props.fontColor || null};
 `;
 function CustomButton({title, onPressButton, color,fontColor, disable}) {
     return (
-        <Container color={color} onClick={disable?null:onPressButton}>
+        <Container color={color} onClick={disable?null:onPressButton} pointerDisable={disable}>
             <TextButton fontColor={fontColor}>{title}</TextButton>
         </Container>
     )

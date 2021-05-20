@@ -72,7 +72,8 @@ const BottomContainer = styled.div`
 `;
 
 const BottomContentContainer = styled.div`
-    display:flex; 
+    display:flex;
+    margin-bottom:15px; 
 `
 const BottomSubContentContainer = styled.div`
     display:flex;
@@ -86,6 +87,24 @@ const Thumbnail = styled.img`
   height: ${(props)=>props.high?props.high:'90px'};
   margin-left:15px;
   border-radius: 10px;
+`;
+
+const TextSection = styled.div`
+    display:flex;
+    justify-content:center;
+    margin-bottom:15px;
+  
+`;
+const TextContentContainer = styled.div`
+    display:flex;
+    flex:0.6;
+    justify-content: flex-end;
+    padding:15px;
+`;
+const TextSubContent = styled.div`
+    display-flex;
+    flex:1;
+    text-align:${(props)=>props.AlignRight?'right':'left'};
 `;
 function PaymentPage() {
     const history=useHistory();
@@ -319,14 +338,18 @@ function PaymentPage() {
                             </div>
                         )
                     })}
-                        <div 
-                            style={{
-                                marginLeft:140,
-                            }}
-                        >
-                            <h5>Total distance is {DistanceSum} KM</h5>
-                            <h5>Total price is {handlerComputeFee(ExtraServices)}</h5>
-                        </div>
+                        <TextSection> 
+                           <TextContentContainer>
+                            <TextSubContent>
+                                <h5>Total distance </h5>
+                                <h5>Total price is </h5>
+                            </TextSubContent>
+                            <TextSubContent AlignRight>
+                                <h5>{DistanceSum} KM</h5>
+                                <h5>{handlerComputeFee(ExtraServices)}</h5>
+                            </TextSubContent>
+                           </TextContentContainer>   
+                        </TextSection>
                     </div>
                     
                 }
